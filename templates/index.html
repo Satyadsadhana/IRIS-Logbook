@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IRIS Logbook</title>
+    <meta name="description" content="Logbook for IRIS Space – Face Recognition Attendance System">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <!-- Animated background particles -->
+    <div class="particles" id="particles"></div>
+    <div class="bg-orb orb1"></div>
+    <div class="bg-orb orb2"></div>
+    <div class="bg-orb orb3"></div>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <div class="nav-logo">
+                <img src="/images/IRIS's Logo.png" alt="IRIS Logo">
+            </div>
+            <span class="nav-title">IRIS Logbook</span>
+        </div>
+        <div class="nav-info">
+            <span class="nav-badge">IRIS Space</span>
+            <div class="nav-clock" id="navClock">--:--:--</div>
+        </div>
+    </nav>
+
+    <!-- ===== HERO SECTION ===== -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-tag">🚀 Intelligent Recognition &amp; Identification System</div>
+            <h1 class="hero-title">IRIS <span class="gradient-text">Logbook</span></h1>
+            <p class="hero-subtitle">Logbook for IRIS Space — Automated face recognition attendance logging for your workspace.</p>
+        </div>
+    </section>
+
+    <!-- ===== STATS ROW ===== -->
+    <section class="stats-row">
+        <div class="stat-card">
+            <div class="stat-icon">🧠</div>
+            <div class="stat-info">
+                <span class="stat-value" id="statTotal">0</span>
+                <span class="stat-label">Total Rekaman</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">✅</div>
+            <div class="stat-info">
+                <span class="stat-value" id="statSession">0</span>
+                <span class="stat-label">Sesi Ini</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">📅</div>
+            <div class="stat-info">
+                <span class="stat-value" id="statDate">—</span>
+                <span class="stat-label">Tanggal</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">🌐</div>
+            <div class="stat-info">
+                <span class="stat-value status-indicator" id="statModel">Aktif</span>
+                <span class="stat-label">Status Model</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-grid">
+
+        <!-- Camera Panel -->
+        <div class="panel camera-panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <span class="panel-icon">📷</span>
+                    <span>Kamera Live</span>
+                </div>
+                <div class="live-badge">
+                    <span class="live-dot"></span> LIVE
+                </div>
+            </div>
+
+            <div class="video-wrapper">
+                <video id="videoElement" autoplay playsinline></video>
+                <!-- Scanning overlay -->
+                <div class="scan-overlay">
+                    <div class="scan-corner tl"></div>
+                    <div class="scan-corner tr"></div>
+                    <div class="scan-corner bl"></div>
+                    <div class="scan-corner br"></div>
+                    <div class="scan-line"></div>
+                </div>
+                <div class="cam-label">Arahkan wajah ke dalam bingkai</div>
+            </div>
+
+            <div class="capture-area">
+                <button id="captureBtn" class="btn-capture">
+                    <span class="btn-icon">⚡</span>
+                    <span>Ambil Foto &amp; Catat Kehadiran</span>
+                </button>
+                <div id="statusMessage" class="status-msg"></div>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="right-col">
+
+            <!-- Instructions Card -->
+            <div class="panel info-panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <span class="panel-icon">📋</span>
+                        <span>Cara Penggunaan</span>
+                    </div>
+                </div>
+                <ol class="instructions">
+                    <li>
+                        <div class="step-num">1</div>
+                        <div class="step-text"><strong>Izinkan akses kamera</strong> saat browser meminta izin.</div>
+                    </li>
+                    <li>
+                        <div class="step-num">2</div>
+                        <div class="step-text"><strong>Hadapkan wajah</strong> ke kamera dalam bingkai yang tersedia.</div>
+                    </li>
+                    <li>
+                        <div class="step-num">3</div>
+                        <div class="step-text">Klik tombol <strong>"Ambil Foto"</strong> untuk merekam kehadiran.</div>
+                    </li>
+                    <li>
+                        <div class="step-num">4</div>
+                        <div class="step-text">Sistem akan <strong>mengenali wajah</strong> dan menyimpan ke log otomatis.</div>
+                    </li>
+                </ol>
+            </div>
+
+            <!-- Log Preview Card -->
+            <div class="panel log-panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <span class="panel-icon">🗂️</span>
+                        <span>Riwayat Kehadiran</span>
+                    </div>
+                    <span class="log-count-badge" id="logCountBadge">0</span>
+                </div>
+
+                <ul id="logList" class="log-list">
+                    <li class="log-empty">Belum ada rekaman pada sesi ini.</li>
+                </ul>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <span>🛸 IRIS Space &mdash; Intelligent Recognition &amp; Identification System</span>
+            <span class="footer-year">2026</span>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
